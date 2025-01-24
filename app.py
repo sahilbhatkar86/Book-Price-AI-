@@ -1,58 +1,52 @@
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+import google.generativeai as genai
 import os
 import tempfile
-import google.generativeai as genai
 
-# Configure the Gemini API key
+app = Flask(__name__)
+CORS(app)
+
+# Configure Gemini API
 genai.configure(api_key="AIzaSyBtpKzAxx2pwMQ1eMO_jtRxk28rRaglVc0")
 
-# Define the prompt template for book analysis
-PROMPT_TEMPLATE = """
-Analyze the uploaded image to extract details about the book. Provide the following information:
-- Title of the book.
-- Author(s) of the book.
-- ISBN (if available).
-- Suggestions for similar books.
-- Prices from different platforms.
+# Define the / route to serve the HTML page
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-Ensure the response is structured and easy to read. If the image is not a valid book cover, respond with: "ERROR: Invalid book image."
-"""
+# Define the /predict route to handle the image upload
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image provided"}), 400
 
-def analyze_book(image_path):
-    """
-    Analyze the uploaded book image using the Gemini API.
-    """
+    image_file = request.files['image']
+    if image_file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
+
     try:
-        # Upload the image using Gemini API
-        uploaded_file = genai.upload_file(path=image_path, display_name="Uploaded Book Image")
-        print(f"Uploaded file URI: {uploaded_file.uri}")
+        # Save the file temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
+            image_path = temp_file.name
+            image_file.save(image_path)
 
-        # Generate content using the Gemini API
+        # Run analysis using Gemini API
+        uploaded_file = genai.upload_file(path=image_path, display_name="Uploaded Image")
         model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-        response = model.generate_content([uploaded_file, PROMPT_TEMPLATE])
+        prompt = "give me only descriptiopn of book only in one line."
+        response = model.generate_content([uploaded_file, prompt])
+
+        # Clean up temporary file
+        os.remove(image_path)
 
         if response and response.text:
-            print("Analysis Results:")
-            print(response.text)
-            return response.text
+            return jsonify({"result": response.text}), 200
         else:
-            print("Error: No response from Gemini API.")
-            return "ERROR: Failed to analyze the book image."
+            return jsonify({"error": "Failed to analyze the image."}), 500
+
     except Exception as e:
-        print(f"Error during processing: {str(e)}")
-        return f"ERROR: {str(e)}"
+        return jsonify({"error": f"Error processing image: {str(e)}"}), 500
 
-def main():
-    """
-    Main function to handle input and analyze the image.
-    """
-    image_path = input("Enter the path to the book image: ").strip()
-    if not os.path.exists(image_path):
-        print("ERROR: File does not exist. Please provide a valid path.")
-        return
-
-    # Analyze the book image
-    result = analyze_book(image_path)
-    print("\nFinal Result:\n", result)
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
