@@ -34,7 +34,7 @@ def predict():
         # Run analysis using Gemini API
         uploaded_file = genai.upload_file(path=image_path, display_name="Uploaded Image")
         model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-        prompt = "give me only descriptiopn of book only in one line."
+        prompt = "give me the descriptiopn of book in detail in only one paragraph (max 10 lines)."
         response = model.generate_content([uploaded_file, prompt])
 
         # Clean up temporary file
