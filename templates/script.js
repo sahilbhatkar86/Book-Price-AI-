@@ -29,11 +29,13 @@ document.getElementById('analyzeBtn').addEventListener('click', async function()
 
         // Check if the request was successful
         if (response.ok) {
-            const data = await response.text();  // Get raw response text
-            console.log(data);  // Print raw response in console (optional)
+            const data = await response.json();  // Get response as JSON
             
-            // Display raw response in the result section
-            document.getElementById('result').innerHTML = `<pre>${data}</pre>`;
+            // Extract the relevant part of the response
+            const bookDescription = data.result;  // Assuming 'result' contains the description you need
+
+            // Display the book description in the result section
+            document.getElementById('result').innerHTML = `<p>${bookDescription}</p>`;
             document.getElementById('result').style.display = 'block';
         } else {
             alert('Error: ' + response.statusText);
