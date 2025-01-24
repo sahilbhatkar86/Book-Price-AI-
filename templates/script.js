@@ -1,3 +1,23 @@
+document.getElementById('imageUpload').addEventListener('change', function() {
+    // Get the selected file
+    const file = this.files[0];
+    
+    // Check if a file is selected
+    if (file) {
+        // Create a URL for the image file
+        const imgURL = URL.createObjectURL(file);
+
+        // Get the image element for preview
+        const imagePreview = document.getElementById('imagePreview');
+        
+        // Set the image source to the created URL
+        imagePreview.src = imgURL;
+
+        // Display the preview image section
+        document.getElementById('previewContainer').style.display = 'block';
+    }
+});
+
 document.getElementById('analyzeBtn').addEventListener('click', async function() {
     // Get the selected file
     const fileInput = document.getElementById('imageUpload');

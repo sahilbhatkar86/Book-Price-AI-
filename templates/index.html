@@ -8,21 +8,31 @@
 </head>
 <body>
     <div class="container">
-        <h1>Upload Book Image</h1>
+        <h1>Book Price Analysis</h1>
+
+        <!-- Image Upload Section -->
         <input type="file" id="imageUpload" accept="image/*">
+        
+        <!-- Preview Image Section -->
+        <div id="previewContainer" style="display:none;">
+            <h3>Image Preview:</h3>
+            <img id="imagePreview" style="max-width: 100%; height: auto;">
+        </div>
+
+        <!-- Analyze Button -->
         <button id="analyzeBtn">Analyze</button>
 
         <!-- Loading Spinner -->
-        <div id="loading" class="spinner" style="display: none;"></div>
+        <div id="loading" style="display:none;" class="spinner"></div>
 
-        <!-- Results Section -->
-        <div id="result" style="display: none;">
-            <h2>Results</h2>
-            <p><strong>Stage:</strong> <span id="stage"></span></p>
-            <p><strong>Activity:</strong> <span id="activity"></span></p>
-            <p><strong>Components:</strong> <span id="components"></span></p>
-            <p><strong>Sub-Stage Progress:</strong> <span id="subStageProgress"></span></p>
-            <p><strong>Overall Progress:</strong> <span id="overallProgress"></span></p>
+        <!-- Result Section -->
+        <div id="result" style="display:none;">
+            <h3>Analysis Result:</h3>
+            <p id="stage"></p>
+            <p id="activity"></p>
+            <p id="components"></p>
+            <p id="subStageProgress"></p>
+            <p id="overallProgress"></p>
         </div>
     </div>
 
