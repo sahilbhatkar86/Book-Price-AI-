@@ -3,56 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Analysis</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Book Price AI</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Book Analysis</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <label for="image">Upload an image of a book:</label>
-            <input type="file" id="image" name="image" accept="image/*">
-            <button type="submit">Analyze</button>
-        </form>
-        <div id="result" class="result"></div>
+        <h1>Upload Book Image</h1>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button id="analyzeBtn">Analyze</button>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="spinner" style="display: none;"></div>
+
+        <!-- Results Section -->
+        <div id="result" style="display: none;">
+            <h2>Results</h2>
+            <p><strong>Stage:</strong> <span id="stage"></span></p>
+            <p><strong>Activity:</strong> <span id="activity"></span></p>
+            <p><strong>Components:</strong> <span id="components"></span></p>
+            <p><strong>Sub-Stage Progress:</strong> <span id="subStageProgress"></span></p>
+            <p><strong>Overall Progress:</strong> <span id="overallProgress"></span></p>
+        </div>
     </div>
 
-    <script>
-        const form = document.getElementById('uploadForm');
-        const resultDiv = document.getElementById('result');
-
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData();
-            const fileInput = document.getElementById('image');
-
-            if (fileInput.files.length === 0) {
-                resultDiv.textContent = 'Please select an image.';
-                resultDiv.className = 'error';
-                return;
-            }
-
-            formData.append('image', fileInput.files[0]);
-
-            try {
-                const response = await fetch('http://127.0.0.1:5000/predict', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    resultDiv.textContent = data.result || data.error;
-                } else {
-                    resultDiv.textContent = 'Failed to analyze the image.';
-                    resultDiv.className = 'error';
-                }
-            } catch (error) {
-                resultDiv.textContent = `Error: ${error.message}`;
-                resultDiv.className = 'error';
-            }
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
