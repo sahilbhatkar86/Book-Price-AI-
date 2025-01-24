@@ -32,7 +32,7 @@ h1 {
 
 /* Input Field Style */
 input[type="file"] {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: 2px solid #ddd;
     border-radius: 5px;
