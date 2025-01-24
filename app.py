@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyBtpKzAxx2pwMQ1eMO_jtRxk28rRaglVc0")
+genai.configure(api_key="AIzaSyC3X0-9A96mWsqv1LRBZSV9CZi224nXVlQ")
 
 # Define the / route to serve the HTML page
 @app.route('/')
