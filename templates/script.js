@@ -29,15 +29,11 @@ document.getElementById('analyzeBtn').addEventListener('click', async function()
 
         // Check if the request was successful
         if (response.ok) {
-            const data = await response.json();
-            // Update result section with the API response
-            document.getElementById('stage').textContent = data.stage;
-            document.getElementById('activity').textContent = data.activity;
-            document.getElementById('components').textContent = data.components;
-            document.getElementById('subStageProgress').textContent = JSON.stringify(data.sub_stage_progress);
-            document.getElementById('overallProgress').textContent = data.overall_progress;
-
-            // Show the result section
+            const data = await response.text();  // Get raw response text
+            console.log(data);  // Print raw response in console (optional)
+            
+            // Display raw response in the result section
+            document.getElementById('result').innerHTML = `<pre>${data}</pre>`;
             document.getElementById('result').style.display = 'block';
         } else {
             alert('Error: ' + response.statusText);
