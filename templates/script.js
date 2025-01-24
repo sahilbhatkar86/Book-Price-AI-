@@ -19,7 +19,7 @@ document.getElementById('analyzeBtn').addEventListener('click', async function()
 
     try {
         // Send the image to the API
-        const response = await fetch('https://your-api-url/predict', {
+        const response = await fetch('https://book-price-ai.onrender.com/predict', {
             method: 'POST',
             body: formData
         });
